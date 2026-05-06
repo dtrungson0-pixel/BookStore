@@ -86,9 +86,9 @@
                     </button>
                     <!-- Dropdown Đăng nhập / Đăng ký -->
                     <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-outline-variant shadow-lg rounded-lg py-2 z-50 origin-top-right">
-                        <a href="#" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng nhập</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng ký</a>
-                    </div>
+    <a href="login.jsp" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng nhập</a>
+    <a href="register.jsp" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng ký</a>
+</div>
                 </div>
             </div>
         </div>

@@ -119,7 +119,7 @@ body {
 				}
 				%>
 
-				<form action="register" method="POST" class="space-y-10">
+				<form action="${pageContext.request.contextPath}/register" method="POST" class="space-y-10">
 
 					<!-- Phần 1: Thông tin đăng nhập -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
