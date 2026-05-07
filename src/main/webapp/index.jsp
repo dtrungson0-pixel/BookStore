@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bookstore - Cửa hàng sách hiện đại</title>
+    <title>BookStore - Cửa hàng sách hiện đại</title>
     
     <!-- Load Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -66,7 +66,7 @@
     <header class="bg-surface/95 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/20 shadow-sm">
         <div class="flex items-center justify-between px-6 md:px-12 h-20 max-w-7xl mx-auto">
             <div class="flex items-center gap-8">
-                <a href="${pageContext.request.contextPath}/index.jsp" class="text-3xl font-bold tracking-tighter text-primary-brand">bookstore</a>
+                <a href="${pageContext.request.contextPath}/index.jsp" class="text-3xl font-bold tracking-tighter text-primary-brand">BookStore</a>
                 <nav class="hidden md:flex gap-8">
                     <a href="#" class="text-sm font-medium text-on-surface-variant hover:text-primary-brand transition-colors">Hàng mới về</a>
                     <a href="#" class="text-sm font-medium text-on-surface-variant hover:text-primary-brand transition-colors">Lựa chọn của chúng tôi</a>
@@ -80,9 +80,12 @@
                     <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant"></i>
                     <input type="text" placeholder="Tìm kiếm tiêu đề, tác giả..." class="pl-10 pr-4 py-2 bg-surface-container-low border-b border-outline-variant focus:border-primary-brand outline-none text-sm w-64 transition-colors bg-transparent"/>
                 </div>
-                <button class="p-2 hover:bg-surface-container transition-colors rounded-full">
-                    <i data-lucide="shopping-cart" class="w-5 h-5 text-on-surface"></i>
-                </button>
+             <a href="${pageContext.request.contextPath}/cart.jsp" class="p-2 hover:bg-surface-container transition-colors rounded-full relative">
+    <i data-lucide="shopping-cart" class="w-5 h-5 text-on-surface"></i>
+    <!-- Có thể code thêm số đếm sản phẩm ở góc icon này sau -->
+</a>
+
+
                 
                 <!-- Menu User Thông Minh (Có logic kiểm tra đăng nhập) -->
                 <div class="relative">
