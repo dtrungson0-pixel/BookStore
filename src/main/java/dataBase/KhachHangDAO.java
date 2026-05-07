@@ -166,7 +166,40 @@ public class KhachHangDAO implements DAOInterface<KhachHang>{
 		}
 		return 0;
 	}
-
+	// Thêm vào trong lớp KhachHangDAO.java
+	public KhachHang selectByTenDangNhapVaMatKhau(String tenDangNhap, String matKhau) {
+	    KhachHang khachHang = null;
+	    try {
+	        Connection con = JDBCUtil.getConnection();
+	        String sql = "SELECT * FROM khachhang WHERE tenDangNhap = ? AND matKhau = ?";
+	        PreparedStatement pstm = con.prepareStatement(sql);
+	        
+	        pstm.setString(1, tenDangNhap);
+	        pstm.setString(2, matKhau);
+	        ResultSet rs = pstm.executeQuery();
+	        
+	        if (rs.next()) {
+	             String maKhachHang = rs.getString("maKhachHang");
+	             String gioiTinh = rs.getString("gioiTinh");
+	             String hoVaTen = rs.getString("hoVaTen");
+	             String diaChi = rs.getString("diaChi");
+	             String diaChiNhanHang = rs.getString("diaChiNhanHang");
+	             String diaChiMuaHang = rs.getString("diaChiMuaHang");
+	             Date ngaySinh = rs.getDate("ngaySinh");
+	             String soDienThoai = rs.getString("soDienThoai");
+	             String email = rs.getString("email");
+	             boolean dangKyNhanBanTin = rs.getBoolean("dangKyNhanBanTin");
+	             
+	             khachHang = new KhachHang(maKhachHang, tenDangNhap, matKhau, gioiTinh, hoVaTen, 
+	                                      diaChi, diaChiNhanHang, diaChiMuaHang, ngaySinh, 
+	                                      soDienThoai, email, dangKyNhanBanTin);
+	        }
+	        JDBCUtil.close(con, pstm, rs);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return khachHang;
+	}
 	
 
 }

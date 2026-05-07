@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.KhachHang" %>
+<%
+    // Lấy thông tin khách hàng từ Session
+    KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
+%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LITERA - Modern Bookstore</title>
+    <title>bookstore - Cửa hàng sách hiện đại</title>
     
     <!-- Load Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -61,7 +66,7 @@
     <header class="bg-surface/95 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/20 shadow-sm">
         <div class="flex items-center justify-between px-6 md:px-12 h-20 max-w-7xl mx-auto">
             <div class="flex items-center gap-8">
-                <a href="#" class="text-3xl font-bold tracking-tighter text-primary-brand">LITERA</a>
+                <a href="${pageContext.request.contextPath}/index.jsp" class="text-3xl font-bold tracking-tighter text-primary-brand">bookstore</a>
                 <nav class="hidden md:flex gap-8">
                     <a href="#" class="text-sm font-medium text-on-surface-variant hover:text-primary-brand transition-colors">Hàng mới về</a>
                     <a href="#" class="text-sm font-medium text-on-surface-variant hover:text-primary-brand transition-colors">Lựa chọn của chúng tôi</a>
@@ -79,16 +84,39 @@
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-on-surface"></i>
                 </button>
                 
-                <!-- Menu User -->
+                <!-- Menu User Thông Minh (Có logic kiểm tra đăng nhập) -->
                 <div class="relative">
-                    <button id="userMenuBtn" class="p-2 hover:bg-surface-container transition-colors rounded-full focus:outline-none">
-                        <i data-lucide="user" class="w-5 h-5 text-on-surface"></i>
+                    <button id="userMenuBtn" class="p-2 hover:bg-surface-container transition-colors rounded-full focus:outline-none flex items-center gap-2">
+                        <% if (khachHang != null) { %>
+                            <!-- ĐÃ ĐĂNG NHẬP: Hiện chữ cái đầu tiên của tên và Tên -->
+                            <div class="w-8 h-8 rounded-full bg-primary-brand text-white flex items-center justify-center text-sm font-bold uppercase">
+                                <%= khachHang.getHoVaTen().substring(0, 1) %>
+                            </div>
+                            <span class="hidden md:block text-sm font-medium text-on-surface"><%= khachHang.getHoVaTen() %></span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-on-surface-variant hidden md:block"></i>
+                        <% } else { %>
+                            <!-- CHƯA ĐĂNG NHẬP: Hiện icon user mặc định -->
+                            <i data-lucide="user" class="w-5 h-5 text-on-surface"></i>
+                        <% } %>
                     </button>
-                    <!-- Dropdown Đăng nhập / Đăng ký -->
+                    
+                    <!-- Dropdown Content -->
                     <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-outline-variant shadow-lg rounded-lg py-2 z-50 origin-top-right">
-    <a href="login.jsp" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng nhập</a>
-    <a href="register.jsp" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng ký</a>
-</div>
+                        <% if (khachHang != null) { %>
+                            <!-- Menu dành cho người dùng đã đăng nhập -->
+                            <div class="px-4 py-2 border-b border-outline-variant/30 mb-1">
+                                <p class="text-xs text-on-surface-variant">Đăng nhập với tên</p>
+                                <p class="text-sm font-bold text-primary-brand truncate"><%= khachHang.getTenDangNhap() %></p>
+                            </div>
+                            <a href="#" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Hồ sơ cá nhân</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đơn hàng của tôi</a>
+                            <a href="${pageContext.request.contextPath}/logout" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors font-medium">Đăng xuất</a>
+                        <% } else { %>
+                            <!-- Menu dành cho người dùng chưa đăng nhập (Khách) -->
+                            <a href="${pageContext.request.contextPath}/login.jsp" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng nhập</a>
+                            <a href="${pageContext.request.contextPath}/register.jsp" class="block px-4 py-2 text-sm text-on-surface hover:bg-surface-container transition-colors">Đăng ký</a>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,10 +186,9 @@
                 </div>
             </aside>
 
-            <!-- Book Grid -->
+            <!-- Book Grid (Đã thu gọn để làm mẫu, bạn giữ nguyên grid sách cũ của bạn) -->
             <div class="flex-grow">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
-                    
                     <!-- Sách 1 -->
                     <div class="group flex flex-col cursor-pointer">
                         <div class="relative aspect-[2/3] w-full mb-4 overflow-hidden bg-surface-container-highest shadow-sm group-hover:shadow-md transition-all duration-300 rounded-sm">
@@ -178,81 +205,25 @@
                             <span class="text-[10px] uppercase tracking-wider px-2 py-1 bg-surface-container-highest text-on-surface font-medium rounded-sm">Bìa cứng</span>
                         </div>
                     </div>
-
-                    <!-- Sách 2 -->
-                    <div class="group flex flex-col cursor-pointer">
-                        <div class="relative aspect-[2/3] w-full mb-4 overflow-hidden bg-surface-container-highest shadow-sm group-hover:shadow-md transition-all duration-300 rounded-sm">
-                            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400" alt="Urban Solitude" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                        <h3 class="text-lg font-bold text-primary-brand mb-1 line-clamp-1 group-hover:underline underline-offset-2">Urban Solitude</h3>
-                        <p class="text-sm text-on-surface-variant mb-3">Marcus Chen</p>
-                        <div class="mt-auto flex items-center justify-between">
-                            <span class="text-lg font-semibold text-primary-brand">$32.50</span>
-                            <span class="text-[10px] uppercase tracking-wider px-2 py-1 bg-surface-container-highest text-on-surface font-medium rounded-sm">Bìa cứng</span>
-                        </div>
-                    </div>
-
-                    <!-- Sách 3 -->
-                    <div class="group flex flex-col cursor-pointer">
-                        <div class="relative aspect-[2/3] w-full mb-4 overflow-hidden bg-surface-container-highest shadow-sm group-hover:shadow-md transition-all duration-300 rounded-sm">
-                            <img src="https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&q=80&w=400" alt="Botanical Histories" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                            <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 flex items-center gap-1 rounded-sm shadow-sm">
-                                <i data-lucide="star" class="w-3 h-3 text-[#150100] fill-[#150100]"></i>
-                                <span class="text-[12px] font-bold text-on-surface">4.9</span>
-                            </div>
-                        </div>
-                        <h3 class="text-lg font-bold text-primary-brand mb-1 line-clamp-1 group-hover:underline underline-offset-2">Botanical Histories</h3>
-                        <p class="text-sm text-on-surface-variant mb-3">Sarah Jenkins</p>
-                        <div class="mt-auto flex items-center justify-between">
-                            <span class="text-lg font-semibold text-primary-brand">$45.00</span>
-                            <span class="text-[10px] uppercase tracking-wider px-2 py-1 bg-surface-container-highest text-on-surface font-medium rounded-sm">Bản đặc biệt</span>
-                        </div>
-                    </div>
-
-                    <!-- Sách 4 -->
-                    <div class="group flex flex-col cursor-pointer">
-                        <div class="relative aspect-[2/3] w-full mb-4 overflow-hidden bg-surface-container-highest shadow-sm group-hover:shadow-md transition-all duration-300 rounded-sm">
-                            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=400" alt="Letters to Nowhere" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                        <h3 class="text-lg font-bold text-primary-brand mb-1 line-clamp-1 group-hover:underline underline-offset-2">Letters to Nowhere</h3>
-                        <p class="text-sm text-on-surface-variant mb-3">David Alistair</p>
-                        <div class="mt-auto flex items-center justify-between">
-                            <span class="text-lg font-semibold text-primary-brand">$18.99</span>
-                            <span class="text-[10px] uppercase tracking-wider px-2 py-1 bg-surface-container-highest text-on-surface font-medium rounded-sm">Bìa mềm</span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Pagination -->
-                <div class="mt-20 flex justify-center items-center gap-2">
-                    <button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface hover:border-primary-brand"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                    <button class="w-10 h-10 flex items-center justify-center bg-primary-brand text-white text-sm font-bold">1</button>
-                    <button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface hover:border-primary-brand text-sm font-medium">2</button>
-                    <button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface hover:border-primary-brand text-sm font-medium">3</button>
-                    <span class="px-2 text-on-surface-variant">...</span>
-                    <button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface hover:border-primary-brand"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    <!-- (Các cuốn sách khác giữ nguyên) -->
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- JS Logic -->
+    <!-- JS Khởi tạo Icons và Toggle Dropdown -->
     <script>
-        // Khởi tạo Icons
         lucide.createIcons();
 
         // Xử lý ẩn/hiện User Menu Dropdown
         const userMenuBtn = document.getElementById('userMenuBtn');
         const userDropdown = document.getElementById('userDropdown');
 
-        // Khi bấm vào biểu tượng user
         userMenuBtn.addEventListener('click', function(event) {
-            event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+            event.stopPropagation();
             userDropdown.classList.toggle('hidden');
         });
 
-        // Đóng dropdown khi bấm ra ngoài bất kỳ đâu trên trang
         window.addEventListener('click', function(event) {
             if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
                 userDropdown.classList.add('hidden');
