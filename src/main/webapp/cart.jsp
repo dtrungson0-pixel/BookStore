@@ -53,14 +53,14 @@
                                         <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=100" class="w-full h-full object-cover">
                                     </div>
                                     <div>
-                                        <p class="font-bold text-gray-900"><%= item.getSanPham().getTenSanPham() %></p>
-                                        <p class="text-xs text-gray-500">Mã: <%= item.getSanPham().getMaSanPham() %></p>
+                                        <p class="font-bold text-gray-900"><%= item.getSanPham().getTenSach() %></p>
+                                        <p class="text-xs text-gray-500">Mã: <%= item.getSanPham().getMaSach() %></p>
                                     </div>
                                 </td>
                                 <td class="py-4 text-center font-medium"><%= item.getSoLuong() %></td>
-                                <td class="py-4 text-right font-medium">$<%= item.getSanPham().getGia() %></td>
+                                <td class="py-4 text-right font-medium">$<%= item.getSanPham().getGiaBan() %></td>
                                 <td class="py-4 text-center">
-                                    <a href="${pageContext.request.contextPath}/cart?action=remove&id=<%= item.getSanPham().getMaSanPham() %>" 
+                                    <a href="${pageContext.request.contextPath}/cart?action=remove&id=<%= item.getSanPham().getMaSach() %>" 
                                        class="text-red-500 hover:text-red-700 flex justify-center">
                                         <i data-lucide="trash-2" class="w-5 h-5"></i>
                                     </a>

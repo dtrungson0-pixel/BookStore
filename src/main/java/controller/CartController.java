@@ -19,39 +19,36 @@ public class CartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String maSanPham = request.getParameter("id");
+        String maSach = request.getParameter("id"); // Lấy ID (Mã sách)
 
         HttpSession session = request.getSession();
         
-        // Lấy giỏ hàng từ Session, nếu chưa có thì tạo mới
         GioHang cart = (GioHang) session.getAttribute("cart");
         if (cart == null) {
             cart = new GioHang();
             session.setAttribute("cart", cart);
         }
 
-        if ("add".equals(action) && maSanPham != null) {
-            // Lấy thông tin sản phẩm từ DB
+        if ("add".equals(action) && maSach != null) {
             SanPhamDAO spDAO = new SanPhamDAO();
             SanPham sp = new SanPham();
-            sp.setMaSanPham(maSanPham);
-            sp = spDAO.selectByID(sp); // Bạn cần đảm bảo SanPhamDAO có hàm tìm theo ID
+            // SỬA: Dùng setMaSach()
+            sp.setMaSach(maSach);
+            sp = spDAO.selectByID(sp); 
             
             if (sp != null) {
                 cart.addItem(sp);
             }
-            // Thêm xong quay lại trang trước đó hoặc trang chủ
-            response.sendRedirect(request.getHeader("Referer"));
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer != null ? referer : "index.jsp");
             return;
         } 
-        else if ("remove".equals(action) && maSanPham != null) {
-            cart.removeItem(maSanPham);
-            // Xóa xong tải lại trang giỏ hàng
+        else if ("remove".equals(action) && maSach != null) {
+            cart.removeItem(maSach);
             response.sendRedirect(request.getContextPath() + "/cart.jsp");
             return;
         }
 
-        // Mặc định: Chuyển đến trang xem giỏ hàng
         response.sendRedirect("cart.jsp");
     }
 }
